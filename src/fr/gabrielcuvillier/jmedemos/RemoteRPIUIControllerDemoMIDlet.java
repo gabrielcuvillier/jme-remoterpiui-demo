@@ -116,7 +116,7 @@ public class RemoteRPIUIControllerDemoMIDlet extends MIDlet {
             _InputStream = _Connection.openInputStream();
         } catch (IOException ex) {
             // In case of connnection error, stop application
-            throw new RuntimeException("Unable to connect to RPIUIDemo instance");
+            throw new RuntimeException("Unable to connect to RPIUIDemo instance: " + ex.getMessage());
         }
 
         try {
@@ -124,22 +124,31 @@ public class RemoteRPIUIControllerDemoMIDlet extends MIDlet {
             
             // Open the GPIO pins for the 3 input buttons: (0,0),(2,13),(6,15)
             _Button1 = (GPIOPin) DeviceManager.open(
-                    new GPIOPinConfig(0, 0,
-                            GPIOPinConfig.DIR_INPUT_ONLY,
-                            GPIOPinConfig.MODE_INPUT_PULL_DOWN,
-                            GPIOPinConfig.TRIGGER_BOTH_EDGES, false));
+                    new GPIOPinConfig.Builder()
+                            .setControllerNumber(0)
+                            .setPinNumber(0)
+                            .setDirection(GPIOPinConfig.DIR_INPUT_ONLY)
+                            .setDriveMode(GPIOPinConfig.MODE_INPUT_PULL_DOWN)
+                            .setTrigger(GPIOPinConfig.TRIGGER_BOTH_EDGES)
+                            .setInitValue(false).build());
             
             _Button2 = (GPIOPin) DeviceManager.open(
-                    new GPIOPinConfig(2, 13,
-                            GPIOPinConfig.DIR_INPUT_ONLY,
-                            GPIOPinConfig.MODE_INPUT_PULL_DOWN,
-                            GPIOPinConfig.TRIGGER_BOTH_EDGES, false));
+                    new GPIOPinConfig.Builder()
+                            .setControllerNumber(2)
+                            .setPinNumber(13)
+                            .setDirection(GPIOPinConfig.DIR_INPUT_ONLY)
+                            .setDriveMode(GPIOPinConfig.MODE_INPUT_PULL_DOWN)
+                            .setTrigger(GPIOPinConfig.TRIGGER_BOTH_EDGES)
+                            .setInitValue(false).build());
             
             _Button3 = (GPIOPin) DeviceManager.open(
-                    new GPIOPinConfig(6, 15,
-                            GPIOPinConfig.DIR_INPUT_ONLY,
-                            GPIOPinConfig.MODE_INPUT_PULL_DOWN,
-                            GPIOPinConfig.TRIGGER_BOTH_EDGES, false));
+                    new GPIOPinConfig.Builder()
+                            .setControllerNumber(6)
+                            .setPinNumber(15)
+                            .setDirection(GPIOPinConfig.DIR_INPUT_ONLY)
+                            .setDriveMode(GPIOPinConfig.MODE_INPUT_PULL_DOWN)
+                            .setTrigger(GPIOPinConfig.TRIGGER_BOTH_EDGES)
+                            .setInitValue(false).build());
 
             // Register pin input listeners for each button
             _Button1.setInputListener(
